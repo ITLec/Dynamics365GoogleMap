@@ -1,0 +1,121 @@
+﻿<html>
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap">
+    </script>
+
+
+    <script src="../ClientGlobalContext.js.aspx" type="text/javascript"></script>
+
+    <script src="Scripts/SDK.REST.js" type="text/javascript"></script>
+    <script src="Scripts/WebResourceHelper.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+       //       var numberOfRecordssToRetrieve; // The select control with options for the number of records to retrieve.
+              var recordsRetrieved; //The span displaying the number of account records retrieved.
+              var successMessage; // The message displayed when records are returned.
+              var totalRecordCount = 0;
+
+
+              function retrieveRecordsCallBack(retrievedRecords) {
+                  totalRecordCount = totalRecordCount + retrievedRecords.length;
+                  for (var i = 0; i < retrievedRecords.length; i++) {
+                      var record = retrievedRecords[i];
+
+                        //  addMarker(new google.maps.LatLng(latValue, lngValue));
+        placeMarker(record);
+                  }
+              }
+              function recordsRetrieveComplete() {
+              }
+    </script>
+
+
+    <script type="text/javascript">
+        function GetEntityName() {
+            var retValue = GET_WebResource_PARAMETER('entityName');
+
+            return retValue;
+        }
+        function GetLatFieldName() {
+            var retValue = GET_WebResource_PARAMETER('latFieldName');
+
+            return retValue;
+        }
+        function GetLngFieldName() {
+            var retValue = GET_WebResource_PARAMETER('lngFieldName');
+
+            return retValue;
+        }
+        function GetDisplayFieldName() {
+            var retValue = GET_WebResource_PARAMETER('displayFieldName');
+
+            return retValue;
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+</head>
+<body style="word-wrap: break-word;">
+    &nbsp;&nbsp;
+
+    <script>
+var map;
+var myCenter=new google.maps.LatLng(21.546047,39.262136);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:5,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  var options = "$select=" + GetLatFieldName() + "," + GetLngFieldName() + "," + GetEntityName() + "Id," + GetDisplayFieldName() + "&$top=" + "1000000&$filter= (" + GetLatFieldName() + " ne null) and (" + GetLngFieldName() + " ne null)";
+                  //The retrieveAccountsCallBack function is passed through as the successCallBack.
+  SDK.REST.retrieveMultipleRecords(GetEntityName(), options, retrieveRecordsCallBack, function (error) { alert(error.message); }, recordsRetrieveComplete);
+
+
+}
+
+function placeMarker(crmObject) {
+
+    var latValue = crmObject[GetLatFieldName()];
+    var lngValue = crmObject[GetLngFieldName()];
+
+
+ if (latValue != null && lngValue != null) {
+  var location = new google.maps.LatLng(latValue,lngValue);
+    var marker = new google.maps.Marker({
+   position: location,
+   map: map,
+    });
+    var entityURL = SDK.REST._getClientUrl() + '/main.aspx?etn=' + GetEntityName().toLowerCase() + '&pagetype=entityrecord&id=' + crmObject[GetEntityName() + "Id"];
+    var infowindow = new google.maps.InfoWindow({
+        content: '<a href="'+entityURL +'"  target="_blank">'+ crmObject[GetDisplayFieldName()]+'</a> <br>Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+    });
+   // infowindow.open(map,marker);
+
+
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.open(map,marker);
+    });
+ }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+
+
+    <div id="googleMap" style="width: 100%; height: 100%;"></div>
+
+
+
+
+
+</body>
+</html>
