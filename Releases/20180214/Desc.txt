@@ -1,0 +1,25 @@
+Here you can integrate your D365 entities with googlemap (by default you will get the integration with Account, Competitor, Contact, Lead).
+
+New Google Config integration entity to setup:-
+1-API Key.
+2- Default Location (Control) & Center Location (Dashboard).
+3- Default Language (Control Only).
+4- Default Zoom (Control & Dashboard)
+
+Also inside you will get by default 4 Dashboards:-
+Google Map Dashboard - Account
+Google Map Dashboard - Contact
+Google Map Dashboard - Lead
+Google Map Dashboard - Competitor
+
+For any comments related to this version:-
+http://www.itlec.com/2018/02/ITLec-Google-Map-V-20180214.html
+
+To Know how to integrate or create new dashboards:-
+Visit Us:- http://www.itlec.com/2017/07/dynamics-365-google-map-integration.html
+
+All your comments and inquiries are welcome.
+
+This tool is free and will stay free, to add more functionality to this control please contact me:-
+
+Rasheed@ITLec.com
